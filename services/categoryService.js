@@ -8,53 +8,22 @@ const Category = require("../model/categoryModel");
 // @desc    Get list of categories
 // @route   GET api/v1/categories
 // @access  Public
-exports.getCategories = asyncHandler(async (req, res) => {
-  const page = req.query.page * 1 || 1;
-  const limit = req.query.limit * 1 || 5;
-  const skip = (page - 1) * limit;
-  const categories = await Category.find({}).skip(skip).limit(limit);
-  res.status(200).json({ results: categories.length, page, data: categories });
-});
+exports.getCategories = factory.getAll(Category);
 
 // @desc     Get Specific Category by id
 // @route    GET /api/v1/categories/:id
 // @access   Public
-exports.getCategory = asyncHandler(async (req, res, next) => {
-  const { id } = req.params;
-  const category = await Category.findById(id);
-  if (!category) {
-    // res.status(404).json({ msg: `No Category for this id ${id} ` });
-    return next(new ApiError(`No Category for this id ${id}`, 404));
-  }
-  res.status(200).json({ data: category });
-});
+exports.getCategory = factory.getOne(Category);
 
 // @desc    Create Category
 // @route   POST /api/v1/categories
 // @access  Private
-exports.createGategory = asyncHandler(async (req, res) => {
-  const { name } = req.body;
-  //async await
-  const category = await Category.create({ name, slug: slugify(name) });
-  res.status(201).json({ data: category });
-});
+exports.createGategory = factory.createOne(Category);
 
 // @desc    Update Specific Category
 // @route   PUT /api/v1/categories/:id
 // @access  Private
-exports.updateCategory = asyncHandler(async (req, res, next) => {
-  const { id } = req.params;
-  const { name } = req.body;
-  const category = await Category.findByIdAndUpdate(
-    { _id: id },
-    { name, slug: slugify(name) },
-    { new: true }
-  );
-  if (!category) {
-    return next(new ApiError(`No Category for this id ${id}`, 404));
-  }
-  res.status(200).json({ data: category });
-});
+exports.updateCategory = factory.updateOne(Category);
 
 // @desc    Delete Specific Category
 // @route   DELETE /api/v1/categories/:id

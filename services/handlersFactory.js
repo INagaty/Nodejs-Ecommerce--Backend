@@ -27,6 +27,7 @@ exports.updateOne = (Model) =>
         new ApiError(`No document for this id ${req.params.id}`, 404)
       );
     }
+    document.save();
     res.status(200).json({ data: document });
   });
 

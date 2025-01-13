@@ -6,7 +6,7 @@ const {
   addProductToCart,
   getCart,
   removeProductFromCart,
-  deleteCart,
+  clearCart,
   updateCartItemQuantity,
   applyCoupon,
 } = require("../services/cartService");
@@ -17,7 +17,7 @@ router
   .route("/")
   .post(authService.protect, authService.allowedTo("user"), addProductToCart)
   .get(authService.protect, authService.allowedTo("user"), getCart)
-  .delete(authService.protect, authService.allowedTo("user"), deleteCart);
+  .delete(authService.protect, authService.allowedTo("user"), clearCart);
 
 router
   .route("/applyCoupon")

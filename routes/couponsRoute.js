@@ -12,7 +12,11 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(authService.allowedTo("admin", "manager"), getCoupons)
+  .get(
+    authService.protect,
+    authService.allowedTo("admin", "manager"),
+    getCoupons
+  )
   .post(authService.protect, createCoupon);
 
 router
@@ -20,3 +24,5 @@ router
   .get(getCoupon)
   .put(authService.protect, updateCoupon)
   .delete(authService.protect, authService.allowedTo("admin"), deleteCoupon);
+
+module.exports = router;
